@@ -1,11 +1,12 @@
 /** @format */
 
 import { GetPrismaClient } from '../prismaClient';
-import { verify } from 'hono/jwt';
-import { factory, middleware } from '../factory';
+import { factory } from '../factory';
 
 // POST api/v1/blog/
-// PUT api/v1/blog/
+// PUT api/v1/blog/:id
+// DELETE api/blog/:id
+// GET api/v1/blog/:id
 // GET api/v1/blog/
 const blogRouter = factory.createApp();
 
@@ -44,9 +45,10 @@ blogRouter.post('/', async c => {
   }
 });
 
-blogRouter.put('/', async c => {
+blogRouter.put('/:id', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
+  const blogId = c.req.param('id');
 
   if (typeof body.published !== 'boolean') {
     if (body.published === 'true' || body.published === 'false') {
@@ -58,7 +60,7 @@ blogRouter.put('/', async c => {
 
   try {
     const post = await prisma.post.update({
-      where: { id: body.id },
+      where: { id: blogId },
       data: {
         title: body.title,
         content: body.content,
@@ -84,14 +86,40 @@ blogRouter.put('/', async c => {
   }
 });
 
-blogRouter.get('/', async c => {
+blogRouter.get('/bulk?offset&limit', async c => {
+  const prisma = GetPrismaClient(c.env.DATABASE_URL);
+  const offset = parseInt(c.req.param('offset') || '0');
+  const limit = parseInt(c.req.param('limit') || '10');
+
+  try {
+    const blogs = prisma.post.findMany({
+      skip: offset,
+      take: limit,
+    });
+
+    return c.json({
+      offset,
+      limit,
+      msg: 'fetched all blogs',
+      blogs,
+    });
+  } catch (err) {
+    return c.json({
+      msg: 'uneable to fetch the blogs',
+      err,
+    });
+  }
+});
+
+blogRouter.get('/:id', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
+  const blogId = c.req.param('id');
 
   try {
     const post = await prisma.post.findUnique({
       where: {
-        id: body.id,
+        id: blogId,
       },
     });
 
@@ -109,6 +137,31 @@ blogRouter.get('/', async c => {
       },
       500
     );
+  }
+});
+
+blogRouter.delete('/:id', async c => {
+  const prisma = GetPrismaClient(c.env.DATABASE_URL);
+  const body = await c.req.json();
+  const blogId = c.req.param('id');
+
+  try {
+    const post = await prisma.post.delete({
+      where: { id: blogId },
+      select: {
+        title: true,
+      },
+    });
+
+    return c.json({
+      msg: 'post deleted successfully',
+      post,
+    });
+  } catch (err) {
+    return c.json({
+      msg: 'Post deletion falied',
+      err,
+    });
   }
 });
 

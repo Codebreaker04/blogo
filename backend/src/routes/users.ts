@@ -1,7 +1,7 @@
 /** @format */
 
 import { hashSync } from 'bcrypt-ts';
-import { factory, middleware } from '../factory';
+import { factory } from '../factory';
 import { GetPrismaClient } from '../prismaClient';
 
 const userRouter = factory.createApp();
@@ -10,7 +10,7 @@ const userRouter = factory.createApp();
 // PUT /api/user/profile/email
 // PUT /api/user/profile/username
 // PUT /api/user/profile/password
-// DELETE /api/user/:userId
+// DELETE /api/user/
 
 userRouter.get('/profile', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
@@ -116,4 +116,28 @@ userRouter.put('/profile/password', async c => {
   }
 });
 
+userRouter.delete('/', async c => {
+  const prisma = GetPrismaClient(c.env.DATABASE_URL);
+  const userId = c.get('JWTPayload').id as string;
+
+  try {
+    const user = await prisma.user.delete({
+      where: { id: userId },
+      select: {
+        email: true,
+        username: true,
+      },
+    });
+
+    return c.json({
+      msg: 'user deleted successfully',
+      user,
+    });
+  } catch (err) {
+    return c.json({
+      msg: 'deletion process of the user failed',
+      err,
+    });
+  }
+});
 export default userRouter;
