@@ -54,8 +54,6 @@ const signupInput = z
   })
   .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
-export type signupInput = z.infer<typeof signupInput>;
-
 const signinInput = z
   .object({
     email: z.string().email(),
@@ -63,6 +61,33 @@ const signinInput = z
   })
   .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
-export type signinInput = z.infer<typeof signinInput>;
+const blogInput = z
+  .object({
+    title: z.string(),
+    content: z.string(),
+    published: z.boolean(),
+  })
+  .partial({
+    published: true,
+  });
 
-export { signinInput, signupInput };
+const updateEmail = z.object({
+  email: z.string().email(),
+});
+
+const updatePassword = z
+  .object({
+    password: z.string().min(6),
+  })
+  .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
+
+const updateUsername = z.object({
+  username: z.string(),
+});
+
+export type signupInput = z.infer<typeof signupInput>;
+export type signinInput = z.infer<typeof signinInput>;
+export type blogInput = z.infer<typeof blogInput>;
+export type updateEmail = z.infer<typeof updateEmail>;
+export type updatePassword = z.infer<typeof updatePassword>;
+export type updateUsername = z.infer<typeof updateUsername>;
