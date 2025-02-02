@@ -98,31 +98,6 @@ blogRouter.put('/:id', async c => {
   }
 });
 
-blogRouter.get('/bulk?offset&limit', async c => {
-  const prisma = GetPrismaClient(c.env.DATABASE_URL);
-  const offset = parseInt(c.req.param('offset') || '0');
-  const limit = parseInt(c.req.param('limit') || '10');
-
-  try {
-    const blogs = prisma.post.findMany({
-      skip: offset,
-      take: limit,
-    });
-
-    return c.json({
-      offset,
-      limit,
-      msg: 'fetched all blogs',
-      blogs,
-    });
-  } catch (err) {
-    return c.json({
-      msg: 'uneable to fetch the blogs',
-      err,
-    });
-  }
-});
-
 blogRouter.get('/:id', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
@@ -149,6 +124,36 @@ blogRouter.get('/:id', async c => {
       },
       500
     );
+  }
+});
+
+blogRouter.get('/', async c => {
+  const prisma = GetPrismaClient(c.env.DATABASE_URL);
+  const offset = parseInt(c.req.query('offset') || '0');
+  const limit = parseInt(c.req.query('limit') || '10');
+  const userId = c.get('JWTPayload').id as string;
+
+  try {
+    const blogs = await prisma.post.findMany({
+      skip: offset,
+      take: limit,
+
+      where: {
+        authorId: userId,
+      },
+    });
+
+    return c.json({
+      offset,
+      limit,
+      msg: 'fetched all blogs',
+      blogs,
+    });
+  } catch (err) {
+    return c.json({
+      msg: 'unable to fetch the blogs',
+      err,
+    });
   }
 });
 
