@@ -2,18 +2,25 @@
 
 import { GetPrismaClient } from '../prismaClient';
 import { factory } from '../factory';
+import { blogInput } from '@yuvraj04/blogo-common';
 
 // POST api/v1/blog/
 // PUT api/v1/blog/:id
 // DELETE api/blog/:id
 // GET api/v1/blog/:id
 // GET api/v1/blog/
+
 const blogRouter = factory.createApp();
 
 blogRouter.post('/', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
   const userId = c.get('JWTPayload').id as string;
+  const { success } = blogInput.safeParse(body);
+
+  if (!success) {
+    return c.json({ msg: 'invalid bloginput type' }, 400);
+  }
 
   try {
     const post = await prisma.post.create({
@@ -49,6 +56,11 @@ blogRouter.put('/:id', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
   const blogId = c.req.param('id');
+  const { success } = blogInput.safeParse(body);
+
+  if (!success) {
+    return c.json({ msg: 'invalid bloginput type' }, 400);
+  }
 
   if (typeof body.published !== 'boolean') {
     if (body.published === 'true' || body.published === 'false') {
