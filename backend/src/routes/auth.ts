@@ -4,6 +4,8 @@ import { GetPrismaClient } from '../prismaClient';
 import { compareSync, hashSync } from 'bcrypt-ts';
 import { sign } from 'hono/jwt';
 import { factory } from '../factory';
+import { signinInput } from '@yuvraj04/blogo-common';
+import { signupInput } from '@yuvraj04/blogo-common';
 
 // POST api/v1/auth/signup
 // POST api/v1/auth/signin
@@ -12,9 +14,10 @@ const authRouter = factory.createApp();
 authRouter.post('/signup', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
+  const { success } = signupInput.safeParse(body);
 
-  if (!body.password || typeof body.password !== 'string') {
-    return c.json({ msg: 'invalid password type' }, 400);
+  if (!success) {
+    return c.json({ msg: 'invalid credential type' }, 400);
   }
 
   const isUser = await prisma.user.findUnique({
@@ -62,11 +65,11 @@ authRouter.post('/signup', async c => {
 
 authRouter.post('/signin', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
-
   const body = await c.req.json();
+  const { success } = signinInput.safeParse(body);
 
-  if (!body.password || typeof body.password !== 'string') {
-    return c.json({ msg: 'invalid password type' }, 400);
+  if (!success) {
+    return c.json({ msg: 'invalid credential type' }, 400);
   }
 
   const user = await prisma.user.findUnique({
