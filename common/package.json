@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "@yuvraj04/blogo-common",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -13,3 +13,4 @@
     "zod": "^3.24.1"
   }
 }
+
