@@ -2,7 +2,7 @@
 
 import z from 'zod';
 
-const passwordSchema = (password: string, ctx: z.RefinementCtx) => {
+export const passwordSchema = (password: string, ctx: z.RefinementCtx) => {
   const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
   const containsLowercase = (ch: string) => /[a-z]/.test(ch);
   const containsSymbol = (ch: string) =>
@@ -46,7 +46,7 @@ const passwordSchema = (password: string, ctx: z.RefinementCtx) => {
   }
 };
 
-const signupInput = z
+export const signupInput = z
   .object({
     email: z.string().email(),
     username: z.string(),
@@ -54,14 +54,14 @@ const signupInput = z
   })
   .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
-const signinInput = z
+export const signinInput = z
   .object({
     email: z.string().email(),
     password: z.string().min(6),
   })
   .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
-const blogInput = z
+export const blogInput = z
   .object({
     title: z.string(),
     content: z.string(),
@@ -71,17 +71,17 @@ const blogInput = z
     published: true,
   });
 
-const updateEmail = z.object({
+export const updateEmail = z.object({
   email: z.string().email(),
 });
 
-const updatePassword = z
+export const updatePassword = z
   .object({
     password: z.string().min(6),
   })
   .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
-const updateUsername = z.object({
+export const updateUsername = z.object({
   username: z.string(),
 });
 
