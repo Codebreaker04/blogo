@@ -6,7 +6,7 @@ const passwordSchema = (password: string, ctx: z.RefinementCtx) => {
   const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
   const containsLowercase = (ch: string) => /[a-z]/.test(ch);
   const containsSymbol = (ch: string) =>
-    /[`!@#$%^&*())_\-+=\[\]{};':"\\|,.<>\/?~ ]/.test(ch);
+    /[`!@#$%^&*())_ \-+=\[\]{};':"\\|,.<>\/?~ ]/.test(ch);
   const containsNumber = (ch: string) => /\d/.test(ch);
 
   let countNumbers = 0;
