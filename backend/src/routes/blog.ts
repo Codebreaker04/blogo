@@ -62,14 +62,6 @@ blogRouter.put('/:id', async c => {
     return c.json({ msg: 'invalid bloginput type' }, 400);
   }
 
-  if (typeof body.published !== 'boolean') {
-    if (body.published === 'true' || body.published === 'false') {
-      body.published = body.published === 'true'; // Convert string to boolean
-    } else {
-      return c.json({ msg: 'invalid inputs' }, 400);
-    }
-  }
-
   try {
     const post = await prisma.post.update({
       where: { id: blogId },
