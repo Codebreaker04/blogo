@@ -33,7 +33,7 @@ export const middleware = factory.createMiddleware(async (c, next) => {
     const response = await verify(token, c.env.JWT_SECRET);
     c.set('JWTPayload', response);
 
-    if (!response.id) c.json({ msg: 'User is not Authorized' }, 403);
+    if (!response.id) return c.json({ msg: 'User is not Authorized' }, 403);
     await next();
   } catch (err) {
     return c.json({
