@@ -1,5 +1,3 @@
-/** @format */
-
 import { GetPrismaClient } from '../prismaClient';
 import { compareSync, hashSync } from 'bcrypt-ts';
 import { sign } from 'hono/jwt';
@@ -11,6 +9,46 @@ import { signupInput } from '@yuvraj04/blogo-common';
 // POST api/v1/auth/signin
 const authRouter = factory.createApp();
 
+/**
+ * @openapi
+ * /api/v1/auth/signup:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - username
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *                 minLength: 6
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                 msg:
+ *                   type: string
+ *       400:
+ *         description: Invalid input or user already exists
+ */
 authRouter.post('/signup', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
@@ -63,6 +101,42 @@ authRouter.post('/signup', async c => {
   }
 });
 
+/**
+ * @openapi
+ * /api/v1/auth/signin:
+ *   post:
+ *     summary: Sign in existing user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User signed in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       400:
+ *         description: Invalid input or user does not exist
+ *       401:
+ *         description: Invalid password
+ */
 authRouter.post('/signin', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();

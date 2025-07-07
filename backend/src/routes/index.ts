@@ -1,4 +1,3 @@
-/** @format */
 import blogRouter from './blog';
 import userRouter from './users';
 import authRouter from './auth';

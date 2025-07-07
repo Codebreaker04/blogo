@@ -5,11 +5,13 @@
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
+    "@hono/swagger-ui": "^0.5.2",
     "@prisma/client": "^6.2.1",
     "@prisma/extension-accelerate": "^1.2.1",
     "@yuvraj04/blogo-common": "^1.0.3",
     "bcrypt-ts": "^5.0.3",
-    "hono": "^4.6.15"
+    "hono": "^4.6.15",
+    "hono-openapi": "^0.4.8"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241218.0",
