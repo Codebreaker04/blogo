@@ -36,12 +36,12 @@ export const passwordSchema = (password: string, ctx: z.RefinementCtx) => {
   } else if (countNumbers < 1) {
     ctx.addIssue({
       code: 'custom',
-      message: 'password should have number alphabet',
+      message: 'password should have number',
     });
   } else if (countSymbol < 1) {
     ctx.addIssue({
       code: 'custom',
-      message: 'password should have a symbol alphabet',
+      message: 'password should have a symbol',
     });
   }
 };
@@ -54,12 +54,11 @@ export const signupInput = z
   })
   .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
-export const signinInput = z
-  .object({
-    email: z.string().email(),
-    password: z.string().min(6),
-  })
-  .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
+export const signinInput = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+// .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
 export const blogInput = z
   .object({
