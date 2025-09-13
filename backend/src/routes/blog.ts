@@ -112,7 +112,7 @@ blogRouter.post('/', async c => {
  *               - title
  *               - content
  *             properties:
- *               title:
+ *               title:s
  *                 type: string
  *               content:
  *                 type: string
@@ -164,32 +164,6 @@ blogRouter.put('/:id', async c => {
   }
 });
 
-/**
- * @openapi
- * /api/v1/blog/{id}:
- *   get:
- *     summary: Get a specific blog post
- *     tags: [Blog]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Blog post ID
- *     responses:
- *       200:
- *         description: Blog post retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 post:
- *                   type: object
- *       500:
- *         description: Server error
- */
 blogRouter.get('/:id', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
@@ -219,48 +193,6 @@ blogRouter.get('/:id', async c => {
   }
 });
 
-/**
- * @openapi
- * /api/v1/blog:
- *   get:
- *     summary: Get all blog posts for the authenticated user
- *     tags: [Blog]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: offset
- *         schema:
- *           type: integer
- *           default: 0
- *         description: Number of posts to skip
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           default: 10
- *         description: Number of posts to return
- *     responses:
- *       200:
- *         description: Blog posts retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 offset:
- *                   type: integer
- *                 limit:
- *                   type: integer
- *                 msg:
- *                   type: string
- *                 blogs:
- *                   type: array
- *                   items:
- *                     type: object
- *       500:
- *         description: Server error
- */
 blogRouter.get('/', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const offset = parseInt(c.req.query('offset') || '0');
@@ -291,34 +223,6 @@ blogRouter.get('/', async c => {
   }
 });
 
-/**
- * @openapi
- * /api/v1/blog/{id}:
- *   delete:
- *     summary: Delete a blog post
- *     tags: [Blog]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Blog post ID
- *     responses:
- *       200:
- *         description: Blog post deleted successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 msg:
- *                   type: string
- *                 post:
- *                   type: object
- *       500:
- *         description: Server error
- */
 blogRouter.delete('/:id', async c => {
   const prisma = GetPrismaClient(c.env.DATABASE_URL);
   const body = await c.req.json();
