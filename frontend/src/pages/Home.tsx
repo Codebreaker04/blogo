@@ -1,3 +1,5 @@
+import Button from '../components/Button/Button';
+
 export default function Home() {
   const featuredPost = [
     {
@@ -54,13 +56,13 @@ export default function Home() {
       {/* Main Content Container */}
       <div className='max-w-7xl mx-auto px-6 py-8'>
         {/* Hero Section */}
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8'>
           {/* Main Featured Post */}
           <div className='lg:col-span-2 py-3'>
-            <div className='bg-[url("/test.jpg")] bg-cover bg-center w-full h-96 rounded-2xl relative overflow-hidden'>
+            <div className='bg-[url("/test.jpg")] bg-cover bg-center w-full h-107 rounded-2xl relative overflow-hidden'>
               <div className='absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80 rounded-2xl'></div>
-              <div className='absolute bottom-6 left-6 text-white'>
-                <span className='bg-gray-800 text-white px-3 py-1 rounded-full text-sm font-medium mb-3 inline-block'>
+              <div className='absolute backdrop-blur-sm py-6 bottom-0 px-4 text-white'>
+                <span className='bg-transparent text-white px-3 py-1 rounded-full text-sm border-2 font-medium mb-3 inline-block'>
                   Business
                 </span>
                 <h1 className='text-3xl font-bold leading-tight'>
@@ -100,9 +102,7 @@ export default function Home() {
         <div className='mb-8'>
           <div className='flex justify-between items-center mb-6'>
             <h2 className='text-2xl font-bold text-gray-800'>Recent Posts</h2>
-            <button className='px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors'>
-              All Posts
-            </button>
+            <Button>All Posts</Button>
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
