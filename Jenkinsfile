@@ -1,6 +1,7 @@
 pipeline {
-  agent docker
-
+  agent {
+    docker image: 'node:20-alpine'
+  }
   options {
     timestamps()
     buildDiscarder(logRotator(numToKeepStr: '20'))
