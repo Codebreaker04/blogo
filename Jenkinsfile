@@ -13,6 +13,7 @@ pipeline {
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout scm
@@ -26,28 +27,30 @@ pipeline {
     }
 
     stage('Install') {
-      steps {
-        ansiColor('xterm') {
-          parallel {
-            stage('Install common') {
-              steps {
-                dir('common') {
-                  sh 'npm ci || npm install'
-                }
+      parallel {
+        stage('Install common') {
+          steps {
+            ansiColor('xterm') {
+              dir('common') {
+                sh 'npm ci || npm install'
               }
             }
-            stage('Install backend') {
-              steps {
-                dir('backend') {
-                  sh 'npm ci || npm install'
-                }
+          }
+        }
+        stage('Install backend') {
+          steps {
+            ansiColor('xterm') {
+              dir('backend') {
+                sh 'npm ci || npm install'
               }
             }
-            stage('Install frontend') {
-              steps {
-                dir('frontend') {
-                  sh 'npm ci || npm install'
-                }
+          }
+        }
+        stage('Install frontend') {
+          steps {
+            ansiColor('xterm') {
+              dir('frontend') {
+                sh 'npm ci || npm install'
               }
             }
           }
@@ -56,28 +59,30 @@ pipeline {
     }
 
     stage('Build') {
-      steps {
-        ansiColor('xterm') {
-          parallel {
-            stage('Build common') {
-              steps {
-                dir('common') {
-                  sh 'npm run build --if-present'
-                }
+      parallel {
+        stage('Build common') {
+          steps {
+            ansiColor('xterm') {
+              dir('common') {
+                sh 'npm run build --if-present'
               }
             }
-            stage('Build backend') {
-              steps {
-                dir('backend') {
-                  sh 'npm run build --if-present'
-                }
+          }
+        }
+        stage('Build backend') {
+          steps {
+            ansiColor('xterm') {
+              dir('backend') {
+                sh 'npm run build --if-present'
               }
             }
-            stage('Build frontend') {
-              steps {
-                dir('frontend') {
-                  sh 'npm run build --if-present'
-                }
+          }
+        }
+        stage('Build frontend') {
+          steps {
+            ansiColor('xterm') {
+              dir('frontend') {
+                sh 'npm run build --if-present'
               }
             }
           }
@@ -86,28 +91,30 @@ pipeline {
     }
 
     stage('Test') {
-      steps {
-        ansiColor('xterm') {
-          parallel {
-            stage('Test common') {
-              steps {
-                dir('common') {
-                  sh 'npm test --if-present --silent || true'
-                }
+      parallel {
+        stage('Test common') {
+          steps {
+            ansiColor('xterm') {
+              dir('common') {
+                sh 'npm test --if-present --silent || true'
               }
             }
-            stage('Test backend') {
-              steps {
-                dir('backend') {
-                  sh 'npm test --if-present --silent || true'
-                }
+          }
+        }
+        stage('Test backend') {
+          steps {
+            ansiColor('xterm') {
+              dir('backend') {
+                sh 'npm test --if-present --silent || true'
               }
             }
-            stage('Test frontend') {
-              steps {
-                dir('frontend') {
-                  sh 'npm test --if-present --silent || true'
-                }
+          }
+        }
+        stage('Test frontend') {
+          steps {
+            ansiColor('xterm') {
+              dir('frontend') {
+                sh 'npm test --if-present --silent || true'
               }
             }
           }
@@ -140,6 +147,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: env.DOCKER_REGISTRY_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
               sh '''
                 echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin || true
+                # docker compose -f docker-compose.yml push || docker-compose -f docker-compose.yml push
               '''
             }
           }
@@ -150,11 +158,11 @@ pipeline {
 
   post {
     success {
-      echo "Build succeeded. Tag: ${env.IMAGE_TAG}"
+      echo "✅ Build succeeded. Tag: ${env.IMAGE_TAG}"
       archiveArtifacts allowEmptyArchive: true, artifacts: 'frontend/dist/**'
     }
     failure {
-      echo 'Build failed.'
+      echo '❌ Build failed.'
     }
     always {
       junit allowEmptyResults: true, testResults: '**/junit-*.xml, **/test-results/*.xml'
