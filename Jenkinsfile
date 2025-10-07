@@ -39,8 +39,8 @@ pipeline {
         steps {
             script {
                 echo "Running the Docker container"
-                sh "docker stop ${DOCKER_IMAGE_NAME}:latest || true"
-                sh "docker rm ${DOCKER_IMAGE_NAME}:latest || true"
+                sh "docker stop ${DOCKER_IMAGE_NAME} || true"
+                sh "docker rm ${DOCKER_IMAGE_NAME} || true"
                 sh "docker run -d -p 80:80 --name ${DOCKER_IMAGE_NAME} ${DOCKER_IMAGE_NAME}:latest"
                 sh "docker ps -f name=${DOCKER_IMAGE_NAME}"
                 echo "Running the Docker container completed"
