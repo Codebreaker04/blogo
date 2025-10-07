@@ -18,7 +18,9 @@ pipeline {
     stage('Checkout') {
       steps {
         // Checkout the source code from the repository
+        echo "Checking out the source code from the repository"
         git url: 'https://github.com/Codebreaker04/blogo.git', branch: 'dev'
+        echo "Checking out the source code from the repository completed"
       }
     }
 
@@ -26,7 +28,9 @@ pipeline {
         steps {
             script {
                 // Build the Docker image
+                echo "Building the Docker image"
                 docker.build("${DOCKER_IMAGE_NAME}:latest")
+                echo "Building the Docker image completed"
             }
         }
     }
