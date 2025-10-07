@@ -39,7 +39,10 @@ pipeline {
         steps {
             script {
                 echo "Running the Docker container"
-                docker.image("${DOCKER_IMAGE_NAME}:latest").run('-p 80:80')
+                sh "docker stop ${DOCKER_IMAGE_NAME}"
+                sh "docker rm ${DOCKER_IMAGE_NAME}"
+                sh "docker run -d -p 80:80 --name ${DOCKER_IMAGE_NAME} ${DOCKER_IMAGE_NAME}:latest"
+                echo "Running the Docker container completed"
             }
         }
     }
