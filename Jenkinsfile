@@ -29,7 +29,7 @@ pipeline {
             script {
                 // Build the Docker image
                 echo "Building the Docker image"
-                docker.build("${DOCKER_IMAGE_NAME}:latest")
+                docker.build("${DOCKER_IMAGE_NAME}:latest", "frontend")
                 echo "Building the Docker image completed"
             }
         }
