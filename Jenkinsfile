@@ -35,6 +35,15 @@ pipeline {
         }
     }
 
+    stage('Run Docker Container') {
+        steps {
+            script {
+                echo "Running the Docker container"
+                docker.image("${DOCKER_IMAGE_NAME}:latest").run('-p 80:80')
+            }
+        }
+    }
+
     // stage('Push Docker Image') {
     //     steps {
     //         script {
