@@ -1,19 +1,40 @@
 import Button from '../Button/Button';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   return (
-    <div className=' bg-white p-4 px-10 shadow-sm'>
+    <div className='bg-white p-4 px-10 shadow-sm relative z-50'>
       <div className='flex w-full justify-between'>
         <div className='flex items-center'>
           <div>icon</div>
           <span>UpToDate</span>
         </div>
         <div className='flex gap-5 items-center'>
-          <span className='font-medium text-lg cursor-pointer'>Homepage</span>
-          <span className='font-medium text-lg cursor-pointer'>About us</span>
-          <span className='font-medium text-lg cursor-pointer'>Features</span>
-          <span className='font-medium text-lg cursor-pointer'>Blogs</span>
-          <span className='font-medium text-lg cursor-pointer'>Contact us</span>
+          <Link
+            to='/'
+            className='font-medium text-lg cursor-pointer hover:text-gray-600 transition-colors'>
+            Homepage
+          </Link>
+          <Link
+            to='/about'
+            className='font-medium text-lg cursor-pointer hover:text-gray-600 transition-colors'>
+            About us
+          </Link>
+          <Link
+            to='/features'
+            className='font-medium text-lg cursor-pointer hover:text-gray-600 transition-colors'>
+            Features
+          </Link>
+          <Link
+            to='/blogs'
+            className='font-medium text-lg cursor-pointer hover:text-gray-600 transition-colors'>
+            Blogs
+          </Link>
+          <Link
+            to='/contact'
+            className='font-medium text-lg cursor-pointer hover:text-gray-600 transition-colors'>
+            Contact us
+          </Link>
           <div className='flex gap-5'>
             <Button variant='primary'>Login</Button>
             <Button variant='secondary'>Register</Button>
