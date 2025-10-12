@@ -2,7 +2,7 @@
 
 import z from 'zod';
 
-export const passwordSchema = (password: string, ctx: z.RefinementCtx) => {
+export const PasswordSchema = (password: string, ctx: z.RefinementCtx) => {
   const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
   const containsLowercase = (ch: string) => /[a-z]/.test(ch);
   const containsSymbol = (ch: string) =>
@@ -46,21 +46,21 @@ export const passwordSchema = (password: string, ctx: z.RefinementCtx) => {
   }
 };
 
-export const signupInput = z
+export const SignupInput = z
   .object({
     email: z.string().email(),
     username: z.string(),
     password: z.string().min(6),
   })
-  .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
+  .superRefine(({ password }, ctx) => PasswordSchema(password, ctx));
 
-export const signinInput = z.object({
+export const SigninInput = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
 // .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
 
-export const blogInput = z
+export const BlogInput = z
   .object({
     title: z.string(),
     content: z.string(),
@@ -70,23 +70,23 @@ export const blogInput = z
     published: true,
   });
 
-export const updateEmail = z.object({
+export const UpdateEmail = z.object({
   email: z.string().email(),
 });
 
-export const updatePassword = z
+export const UpdatePassword = z
   .object({
     password: z.string().min(6),
   })
-  .superRefine(({ password }, ctx) => passwordSchema(password, ctx));
+  .superRefine(({ password }, ctx) => PasswordSchema(password, ctx));
 
-export const updateUsername = z.object({
+export const UpdateUsername = z.object({
   username: z.string(),
 });
 
-export type signupInput = z.infer<typeof signupInput>;
-export type signinInput = z.infer<typeof signinInput>;
-export type blogInput = z.infer<typeof blogInput>;
-export type updateEmail = z.infer<typeof updateEmail>;
-export type updatePassword = z.infer<typeof updatePassword>;
-export type updateUsername = z.infer<typeof updateUsername>;
+export type SignupInput = z.infer<typeof SignupInput>;
+export type SigninInput = z.infer<typeof SigninInput>;
+export type BlogInput = z.infer<typeof BlogInput>;
+export type UpdateEmail = z.infer<typeof UpdateEmail>;
+export type UpdatePassword = z.infer<typeof UpdatePassword>;
+export type UpdateUsername = z.infer<typeof UpdateUsername>;

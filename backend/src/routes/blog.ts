@@ -1,5 +1,5 @@
 import { GetPrismaClient } from '../prismaClient';
-import { factory } from '../factory';
+import { factory, middleware } from '../factory';
 import { blogInput } from '@yuvraj04/blogo-common';
 
 // POST api/v1/blog/
@@ -9,6 +9,8 @@ import { blogInput } from '@yuvraj04/blogo-common';
 // GET api/v1/blog/
 
 const blogRouter = factory.createApp();
+
+blogRouter.use(middleware);
 
 /**
  * @openapi

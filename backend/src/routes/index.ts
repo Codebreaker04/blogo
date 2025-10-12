@@ -8,7 +8,6 @@ const router = factory.createApp();
 
 router.route('/', openRouter);
 router.route('/auth', authRouter);
-router.use(middleware);
 router.route('/user', userRouter);
 router.route('/blog', blogRouter);
 

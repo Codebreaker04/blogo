@@ -15,7 +15,7 @@ function cn(...classes: Array<string | false | null | undefined>) {
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
     'bg-white text-black hover:bg-gray-50 border border-gray-300  rounded-md shadow-sm',
-  secondary: 'bg-gray-900 text-white hover:bg-gray-800 shadow-sm rounded-md',
+  secondary: 'bg-blue-700 text-white hover:bg-blue-500 shadow-sm rounded-md',
   danger: 'bg-red-600 text-white hover:bg-red-700 rounded-md, shadow-sm',
   ghost:
     'bg-transparent text-gray-900 border border-gray-300 hover:bg-gray-50 rounded-md shadow-sm',
@@ -50,4 +50,3 @@ export default function Button({
     </button>
   );
 }
-

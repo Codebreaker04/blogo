@@ -1,13 +1,15 @@
 /** @format */
 
 import { hashSync } from 'bcrypt-ts';
-import { factory } from '../factory';
+import { factory, middleware } from '../factory';
 import { GetPrismaClient } from '../prismaClient';
 import { updateEmail } from '@yuvraj04/blogo-common';
 import { updatePassword } from '@yuvraj04/blogo-common';
 import { updateUsername } from '@yuvraj04/blogo-common';
 
 const userRouter = factory.createApp();
+
+userRouter.use(middleware);
 
 // GET /api/user/profile
 // PUT /api/user/profile/email
