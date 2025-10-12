@@ -4,9 +4,10 @@ import { Hono } from 'hono';
 import { swaggerUI } from '@hono/swagger-ui';
 import mainRouter from './routes/index';
 import { openApiSpec } from './routes/doc';
+import { cors } from 'hono/cors';
 
 const app = new Hono();
-
+app.use(cors());
 // Serve Swagger UI with the OpenAPI spec
 app.get(
   '/ui',
@@ -24,4 +25,3 @@ app.get('/doc', c => {
 app.route('/api/v1', mainRouter);
 
 export default app;
-

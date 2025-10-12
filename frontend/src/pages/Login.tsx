@@ -16,13 +16,20 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log('Login Attempt', loginInputs);
+    sendRequest();
   };
 
   async function sendRequest() {
     try {
-      const response = await axios.post(`${BACKEND_URL}/signin`);
+      const response = await axios.post(
+        `${BACKEND_URL}/auth/signin`,
+        loginInputs
+      );
+      if (response) {
+        const jwt = response.data.token;
+        localStorage.setItem('token', jwt);
+        navigate('/');
+      }
     } catch {}
   }
 
