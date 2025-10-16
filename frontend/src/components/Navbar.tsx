@@ -40,7 +40,9 @@ export default function Navbar() {
             <Link to='/login'>
               <Button variant='primary'>Login</Button>
             </Link>
-            <Button variant='secondary'>Register</Button>
+            <Link to={'/register'}>
+              <Button variant='secondary'>Register</Button>
+            </Link>
           </div>
         </div>
       </div>
